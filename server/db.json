@@ -2,12 +2,12 @@
   "users": [
     {
       "name": "John Senna Oliveira",
-      "email": "john.senna@email.com",
-      "login": "jhons",
-      "senha": "U2FsdGVkX18+XVmfkXxWO2CzV1okKQZNj42SQme8KKE=",
+      "email": "john.senna@gmail.com",
+      "login": "johns",
+      "senha": "U2FsdGVkX194tR4eaGNfQBLD3y7/SzST1m8aWAZ/A1g=",
       "acesso": "adm",
-      "id": 1,
-      "status": "ativo"
+      "status": "inativo",
+      "id": 1
     },
     {
       "name": "Gisele Santos",
@@ -30,15 +30,56 @@
   ],
   "positions": [
     {
-      "id": 1,
-      "name": "Analista"
+      "name": "Analista Junior",
+      "id": 1
+    },
+    {
+      "name": "Gerente",
+      "id": 2
+    },
+    {
+      "name": "Desenvolvedor Frontend",
+      "id": 4
+    },
+    {
+      "name": "Analista Pleno",
+      "id": 5
+    },
+    {
+      "name": "DBA",
+      "id": 6
+    },
+    {
+      "name": "Técnico",
+      "id": 7
+    },
+    {
+      "name": "Consultor",
+      "id": 8
+    },
+    {
+      "name": "Supervisor",
+      "id": 9
     }
   ],
   "stores": [
     {
       "id": 1,
       "number": 125,
-      "name": "Show Moveis"
+      "name": "Show Moveis",
+      "status": "inativo"
+    },
+    {
+      "number": "175",
+      "name": "Moveis Atacado",
+      "status": "ativo",
+      "id": 2
+    },
+    {
+      "number": "72",
+      "name": "Smart Technology",
+      "status": "inativo",
+      "id": 3
     }
   ]
 }

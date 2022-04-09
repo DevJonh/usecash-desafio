@@ -1,0 +1,75 @@
+<mat-tab-group [(selectedIndex)]=selectedIndex>
+  <mat-tab label="Cadastro">
+    <mat-card>
+      <mat-card-title>Cadastro dos Cargos</mat-card-title>
+      <form [formGroup]="formData" (ngSubmit)="save(formData.value)">
+        <mat-form-field appearance="fill">
+          <mat-label>Nome do Cargo</mat-label>
+          <input matInput placeholder="ex. Analista Junior" formControlName="name" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="formData.get('name')?.hasError('required')">Campo Obrigatório</mat-error>
+        </mat-form-field>
+
+        <button class="btn-submit" mat-raised-button type="submit" [disabled]="formData.invalid">
+          Salvar
+        </button>
+      </form>
+
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Cargos">
+    <mat-card>
+      <mat-card-title>Lista dos Cargos</mat-card-title>
+
+      <div class="header-container">
+        <form class="list-position" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+          <input matInput type="search" placeholder="nome do cargo" class="search-list" formControlName="search">
+          <button mat-raised-button color="primary" class="btn-list" type="submit">
+            <mat-icon>search</mat-icon>
+            Pesquisar
+          </button>
+        </form>
+
+        <button mat-raised-button class="download" type="button" (click)="gerarPlanilha()">
+          Dowload Excel <mat-icon>file_download</mat-icon>
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.id}}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.name}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="deletePosition(element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
+        <p>Nenhuma usuário encontrada!</p>
+      </mat-card>
+
+      <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 15, 25]"></mat-paginator>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
