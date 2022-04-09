@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "name": "John Senna Oliveira",
+      "email": "john.senna@email.com",
+      "login": "jhons",
+      "senha": "U2FsdGVkX18+XVmfkXxWO2CzV1okKQZNj42SQme8KKE=",
+      "acesso": "adm",
+      "id": 1,
+      "status": "ativo"
+    },
+    {
+      "name": "Gisele Santos",
+      "email": "gisele.pereira@gmail.com",
+      "login": "giseles",
+      "senha": "U2FsdGVkX194tR4eaGNfQBLD3y7/SzST1m8aWAZ/A1g=",
+      "acesso": "padrao",
+      "status": "inativo",
+      "id": 4
+    },
+    {
+      "name": "Gisele Oliveira",
+      "email": "gisele.oliveira@gmail.com",
+      "login": "giseleol",
+      "senha": "U2FsdGVkX1+XNx6e085Gili27nVL2U4pbXYZ9E8Hv7g=",
+      "acesso": "adm",
+      "status": "ativo",
+      "id": 7
+    }
+  ],
+  "positions": [
+    {
+      "id": 1,
+      "name": "Analista"
+    }
+  ],
+  "stores": [
+    {
+      "id": 1,
+      "number": 125,
+      "name": "Show Moveis"
+    }
+  ]
+}

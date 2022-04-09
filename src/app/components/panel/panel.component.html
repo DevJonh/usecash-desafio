@@ -1,0 +1,41 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Painel 1
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <ul>
+      <li><a href="/users">Usuários</a></li>
+      <li><a href="/positions">Cargos</a></li>
+      <li><a href="/stores">Lojas</a></li>
+      <li><a href="/regions">Regiões</a></li>
+    </ul>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Painel 2
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <ul>
+      <li><a href="/users">Usuários</a></li>
+      <li><a href="/positions">Cargos</a></li>
+      <li><a href="/stores">Lojas</a></li>
+      <li><a href="/regions">Regiões</a></li>
+    </ul>
+  </mat-expansion-panel>
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Painel 3
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <ul>
+      <li><a href="/users">Usuários</a></li>
+      <li><a href="/positions">Cargos</a></li>
+      <li><a href="/stores">Lojas</a></li>
+      <li><a href="/regions">Regiões</a></li>
+    </ul>
+  </mat-expansion-panel>
+</mat-accordion>

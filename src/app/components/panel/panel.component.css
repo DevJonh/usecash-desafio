@@ -1,0 +1,29 @@
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background-color: #ccc;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  height: 48px;
+}
+
+li + li {
+  margin-top: 0.8rem;
+}
+
+li {
+  font-size: 0.9rem;
+  font-weight: 500;
+  list-style: square;
+}
+
+li a {
+  display: block;
+  color: #b9088d;
+  text-decoration: none;
+  transition: filter 0.3s;
+}
+
+li a:hover {
+  filter: brightness(0.7);
+}
