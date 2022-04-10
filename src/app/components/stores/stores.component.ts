@@ -16,6 +16,8 @@ import { MyErrorStateMatcher } from 'src/app/utils/input-error-state';
 import { ShowMessageService } from 'src/services/show-message.service';
 import { StoreService } from './stores.service';
 import { Subscription } from 'rxjs';
+import { Region } from 'src/app/models/region';
+import { RegionService } from '../regions/regions.service';
 
 @Component({
   selector: 'app-stores',
@@ -26,6 +28,7 @@ import { Subscription } from 'rxjs';
 export class StoresComponent implements OnInit {
   displayedColumns: string[] = ['id', 'number', 'store', 'action'];
   store: Store = <Store>{};
+  regions!: Region[];
   formData!: FormGroup;
   searchData!: FormGroup;
   selectedIndex = 0;
@@ -44,11 +47,13 @@ export class StoresComponent implements OnInit {
   updateStoreSubscription!: Subscription;
   deleteStoreSubscription!: Subscription;
   updateStatusStoreSubscription!: Subscription;
+  getRegionsSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private storeService: StoreService,
-    private message: ShowMessageService
+    private message: ShowMessageService,
+    private regionService: RegionService
   ) {}
 
   private fillFormData() {
@@ -59,7 +64,16 @@ export class StoresComponent implements OnInit {
         [this.validateStoreDuplication.bind(this)],
       ],
       name: [this.store.name, Validators.required],
+      region: [this.regions, Validators.required],
     });
+  }
+
+  private getAllRegionss() {
+    this.getRegionsSubscription = this.regionService
+      .getRegions()
+      .subscribe((data) => {
+        this.regions = data;
+      });
   }
 
   private getAllStores() {
@@ -79,6 +93,7 @@ export class StoresComponent implements OnInit {
       search: [null],
     });
 
+    this.getAllRegionss();
     this.getAllStores();
   }
 
@@ -93,14 +108,16 @@ export class StoresComponent implements OnInit {
     this.updateStoreSubscription.unsubscribe();
     this.deleteStoreSubscription.unsubscribe();
     this.updateStatusStoreSubscription.unsubscribe();
+    this.getRegionsSubscription.unsubscribe();
   }
 
-  save(data: Store) {
+  save(data: any) {
     let store: Store = {
       ...data,
       status: 'ativo',
+      regionId: data.region,
+      selected: false,
     };
-
     this.createSubscription = this.storeService.create(store).subscribe(() => {
       this.message.showMessage('Usuário Cadastrado com Sucesso');
       this.getAllStores();

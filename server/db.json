@@ -67,19 +67,71 @@
       "id": 1,
       "number": 125,
       "name": "Show Moveis",
-      "status": "inativo"
+      "status": "ativo",
+      "regionId": 1,
+      "selected": true
     },
     {
       "number": "175",
       "name": "Moveis Atacado",
       "status": "ativo",
-      "id": 2
+      "id": 2,
+      "regionId": 1,
+      "selected": true
     },
     {
       "number": "72",
       "name": "Smart Technology",
       "status": "inativo",
-      "id": 3
+      "id": 3,
+      "regionId": 1,
+      "selected": false
+    },
+    {
+      "number": "89",
+      "name": "Tech & Art",
+      "region": 3,
+      "status": "ativo",
+      "regionId": 3,
+      "selected": false,
+      "id": 4
+    },
+    {
+      "number": "77",
+      "name": "Utilitários do Ching",
+      "region": 2,
+      "status": "ativo",
+      "regionId": 2,
+      "selected": true,
+      "id": 5
+    }
+  ],
+  "regions": [
+    {
+      "id": 1,
+      "region": "BA",
+      "status": "ativo",
+      "number_store": 3
+    },
+    {
+      "id": 2,
+      "region": "SP",
+      "status": "ativo"
+    },
+    {
+      "id": 3,
+      "region": "RJ",
+      "status": "ativo"
+    },
+    {
+      "region": "DF",
+      "id": 4,
+      "status": "ativo"
+    },
+    {
+      "region": "MG",
+      "status": "ativo",
+      "id": 5
     }
   ]
 }

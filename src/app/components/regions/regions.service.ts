@@ -1,4 +1,4 @@
-import { Store } from '../../models/store';
+import { Region } from '../../models/region';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -8,7 +8,7 @@ import { ShowMessageService } from 'src/services/show-message.service';
 @Injectable({
   providedIn: 'root',
 })
-export class StoreService {
+export class RegionService {
   private baseUrl = 'http://localhost:3000';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -20,42 +20,48 @@ export class StoreService {
 
   constructor(private http: HttpClient, private message: ShowMessageService) {}
 
-  create(data: Store): Observable<Store> {
+  create(data: Region): Observable<Region> {
     return this.http
-      .post<Store>(`${this.baseUrl}/stores`, data, this.httpOptions)
+      .post<Region>(`${this.baseUrl}/regions`, data, this.httpOptions)
       .pipe(
         retry(1),
         catchError((e) => this.handleError(e, 'criation'))
       );
   }
 
-  getStores(): Observable<Store[]> {
+  getRegions(): Observable<Region[]> {
     return this.http
-      .get<Store[]>(`${this.baseUrl}/stores`, this.httpOptions)
+      .get<Region[]>(`${this.baseUrl}/regions`, this.httpOptions)
       .pipe(
         retry(1),
         catchError((e) => this.handleError(e, ''))
       );
   }
 
-  updateStore(id: number | undefined, store: Store): Observable<Store> {
+  updateRegion(id: number | undefined, region: Region): Observable<Region> {
     if (!id) {
       this.message.showMessage('Erro durante a edição', true);
     }
 
     return this.http
-      .put<Store>(`${this.baseUrl}/stores/${id}`, store, this.httpOptions)
+      .put<Region>(`${this.baseUrl}/regions/${id}`, region, this.httpOptions)
       .pipe(
         retry(1),
         catchError((e) => this.handleError(e, 'update'))
       );
   }
 
-  updateStatusStore(id: number, store: Store): Observable<Store> {
+  updateStatusRegion(
+    id: number | undefined,
+    region: Region
+  ): Observable<Region> {
+    if (!id) {
+      this.message.showMessage('Erro durante a edição', true);
+    }
     return this.http
-      .put<Store>(
-        `${this.baseUrl}/stores/${id}`,
-        { ...store, status: store.status === 'ativo' ? 'inativo' : 'ativo' },
+      .put<Region>(
+        `${this.baseUrl}/regions/${id}`,
+        { ...region, status: region.status === 'ativo' ? 'inativo' : 'ativo' },
         this.httpOptions
       )
       .pipe(
@@ -64,28 +70,12 @@ export class StoreService {
       );
   }
 
-  updateSelectedStore(id: number | undefined, store: Store): Observable<Store> {
-    if (!id) {
-      this.message.showMessage('Erro durante a edição', true);
-    }
+  verifyDuplicateRegions(region: string) {
     return this.http
-      .put<Store>(
-        `${this.baseUrl}/stores/${id}`,
-        { ...store, selected: store.selected ? false : true },
-        this.httpOptions
-      )
+      .get<Region[]>(`${this.baseUrl}/regions`, this.httpOptions)
       .pipe(
-        retry(1),
-        catchError((e) => this.handleError(e, 'update'))
-      );
-  }
-
-  verifyDuplicateNumber(number: number) {
-    return this.http
-      .get<Store[]>(`${this.baseUrl}/stores`, this.httpOptions)
-      .pipe(
-        map((dados: { number: any }[]) =>
-          dados.filter((d) => d.number === number)
+        map((dados: { region: any }[]) =>
+          dados.filter((d) => d.region === region.toUpperCase())
         ),
         map((dados: any[]) => dados.length > 0),
         retry(1),

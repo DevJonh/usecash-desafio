@@ -1,34 +1,20 @@
 <mat-tab-group [(selectedIndex)]=selectedIndex>
   <mat-tab label="Cadastro">
     <mat-card>
-      <mat-card-title>Cadastro da Loja</mat-card-title>
-      <form [formGroup]="formData" (ngSubmit)="save(formData.value)">
+      <mat-card-title>Cadastro das Regiões</mat-card-title>
+      <form [formGroup]="formData" (ngSubmit)="isEdit ? edit(formData.value) : save(formData.value)">
+
         <mat-form-field appearance="fill">
-          <mat-label>Nº da Loja</mat-label>
-          <input matInput placeholder="numero da loja no sistema" formControlName="number"
-            [errorStateMatcher]="matcher">
+          <mat-label>Sigla da Região</mat-label>
+          <input matInput placeholder="ex. SP" formControlName="region" [errorStateMatcher]="matcher">
           <mat-error
-            *ngIf="formData.get('number')?.hasError('duplicateNumberStore') && !formData.get('number')?.hasError('required') ">
-            Loja já existe</mat-error>
-          <mat-error *ngIf="formData.get('number')?.hasError('required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Nome da Loja</mat-label>
-          <input matInput placeholder="" formControlName="name" [errorStateMatcher]="matcher">
-          <mat-error *ngIf="formData.get('name')?.hasError('required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Região</mat-label>
-          <mat-select formControlName="region" [errorStateMatcher]="matcher">
-            <mat-option *ngFor="let region of regions" [value]="region.id">
-              {{region.region}}
-            </mat-option>
-          </mat-select>
+            *ngIf="(formData.get('region')?.hasError('maxlength') || formData.get('region')?.hasError('minlength')) && !formData.get('region')?.hasError('required')">
+            Deve possuir 2 caracteres</mat-error>
+          <mat-error
+            *ngIf="formData.get('region')?.hasError('duplicateRegion') && !formData.get('region')?.hasError('required')">
+            Região já Cadastrada</mat-error>
           <mat-error *ngIf="formData.get('region')?.hasError('required')">Campo Obrigatório</mat-error>
         </mat-form-field>
-
 
         <button class="btn-submit" mat-raised-button type="submit" [disabled]="formData.invalid">
           Salvar
@@ -37,13 +23,13 @@
 
     </mat-card>
   </mat-tab>
-  <mat-tab label="Loja">
+  <mat-tab label="Lista">
     <mat-card>
-      <mat-card-title>Lista das Lojas</mat-card-title>
+      <mat-card-title>Lista das Regiões</mat-card-title>
 
       <div class="header-container">
-        <form class="list-store" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
-          <input matInput type="number" placeholder="nº da loja" class="search-list" formControlName="search">
+        <form class="list-region" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+          <input matInput type="search" placeholder="região" class="search-list" formControlName="search">
           <button mat-raised-button color="primary" class="btn-list" type="submit">
             <mat-icon>search</mat-icon>
             Pesquisar
@@ -66,23 +52,29 @@
         </ng-container>
 
         <!-- Number Column -->
-        <ng-container matColumnDef="number">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nº Loja </th>
+        <ng-container matColumnDef="region">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Região </th>
           <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            {{element.number}} </td>
+            {{element.region}} </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="store">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Loja </th>
+        <ng-container matColumnDef="number_loja">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nº de Lojas </th>
           <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            {{element.name}} </td>
+            {{element.number_store}} </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
+            <button mat-icon-button (click)="callEdit(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="openModal(element.id, element.region)">
+              <mat-icon>store</mat-icon>
+            </button>
             <button mat-icon-button *ngIf="element.status === 'inativo'" (click)="toggleStatus(element)">
               <mat-icon>check_box</mat-icon>
             </button>
@@ -98,7 +90,7 @@
       </table>
 
       <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
-        <p>Nenhuma loja encontrada!</p>
+        <p>Nenhuma região cadastrada!</p>
       </mat-card>
 
       <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 15, 25]"></mat-paginator>

@@ -138,6 +138,7 @@ export class UsersComponent implements OnInit {
         this.message.showMessage('Usuário editado com Sucesso!');
         this.getAllUsers();
         this.formData.reset();
+        this.isEdit = false;
       });
   }
 

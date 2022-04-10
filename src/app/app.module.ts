@@ -13,6 +13,8 @@ import { PanelComponent } from './components/panel/panel.component';
 import { UsersComponent } from './components/users/users.component';
 import { PositionsComponent } from './components/positions/positions.component';
 import { StoresComponent } from './components/stores/stores.component';
+import { RegionsComponent } from './components/regions/regions.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { StoresComponent } from './components/stores/stores.component';
     UsersComponent,
     PositionsComponent,
     StoresComponent,
+    RegionsComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
