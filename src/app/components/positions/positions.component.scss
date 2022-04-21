@@ -1,32 +1,42 @@
-.mat-tab-label {
-  color: #fff;
-  opacity: 1 !important;
+ul li {
+  display: flex;
+}
+
+label {
   font-size: 1rem;
-  letter-spacing: 0.1rem;
-
-  width: 50%;
-  justify-content: flex-start !important;
-
-  border-radius: 5px;
+  font-weight: 500;
+  letter-spacing: 0.09;
+  padding-left: 0.2rem;
+}
+input.form-control {
+  height: 3rem;
 }
 
-.mat-tab-header {
-  border-radius: 3px;
-  background-color: #555;
-  margin-bottom: 1rem;
+#cadastro_position {
+  button {
+    cursor: pointer;
+    width: 25%;
+    height: 2.7rem;
+    margin: 3rem 0 1rem auto;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
 }
 
-.mat-tab-group {
-  border: 2px outset #000;
-  border-radius: 7px;
-}
-.mat-tab-group.mat-primary .mat-ink-bar,
-.mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background-color: #a4c4ee;
-}
-
-.mat-card {
-  padding: 1rem 2rem !important;
+.btn.btn-outline-secondary {
+  background-color: #17475c;
+  &:active {
+    background-color: #17475c !important;
+    border-color: #17475c !important;
+  }
 }
 
 strong {
@@ -42,58 +52,16 @@ form {
   margin-top: 2rem;
 }
 
-.mat-form-field {
-  width: 100%;
-  margin: 0 auto;
-}
-.mat-form-field + .mat-form-field {
-  margin-top: 1.2rem;
-}
-
-.mat-radio-group {
-  width: 100%;
-  margin: 1.2rem auto;
-}
-
-.mat-radio-button + .mat-radio-button {
-  margin-left: 1rem;
-}
-
-.mat-raised-button.btn-submit {
-  cursor: pointer;
-  width: 25%;
-  height: 2.7rem;
-  margin: 3rem 0 1rem auto;
-  border: none;
-  border-radius: 3px;
-  background-color: #3f51b5;
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  transition: background 0.3s;
-}
-
-.mat-raised-button.btn-submit:hover {
-  background-color: #2d3ea0;
-}
-
-.mat-raised-button.btn-submit:disabled {
-  cursor: not-allowed;
-  background-color: #ccc;
-  color: #222;
-}
-
 form.list-position {
   width: 35%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-}
-
-form.list-position .mat-form-field {
-  height: 24px;
+  input {
+    margin-right: 1rem;
+    height: 2.5rem;
+  }
 }
 
 .header-container {
@@ -103,29 +71,7 @@ form.list-position .mat-form-field {
   justify-content: space-between;
 }
 
-.mat-raised-button.btn-list {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 1rem;
-  height: 40px;
-  width: 12rem;
-}
-.mat-raised-button.btn-list span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 9rem;
-}
-
-.mat-input-element.search-list {
-  border: 1px solid #000;
-  padding: 0.55rem 1rem;
-  border-radius: 5px;
-  height: 40px;
-}
-
-.mat-raised-button.download {
+.btn.download {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,80 +84,36 @@ form.list-position .mat-form-field {
   transition: background 0.3s;
 }
 
-.mat-raised-button.download:hover {
+.btn.download:hover {
   background-color: #009414;
 }
 
-.mat-raised-button.download span {
+.btn.download .fa {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 9rem;
+  margin-left: 1rem;
 }
 
 .table {
-  width: 60%;
-  margin: 3rem auto;
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  td {
+    vertical-align: middle;
+  }
 }
 
-.mat-header-row {
-  background-color: #06055a;
-}
+.btn.btn-light {
+  padding: 0;
+  background: none;
+  border: none;
+  .fa {
+    font-size: 1.2rem;
+  }
 
-.mat-header-row th {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.mat-header-row th {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.mat-column-status,
-.mat-column-action {
-  width: 4rem;
-}
-
-.mat-column-id {
-  width: 4rem;
-}
-
-.mat-column-action span {
-  display: inline-block;
-  margin: 0;
-  cursor: pointer;
-}
-
-.mat-column-action span + span {
-  margin-left: 1.5rem;
-}
-
-.not-found span {
-  color: #ff0000;
-  margin-left: 0.3rem;
-}
-
-.not-found p {
-  margin-top: 1.2rem;
-  font-size: 1rem;
-}
-
-.not-found button {
-  margin-top: 2rem;
-}
-
-.mat-divider-vertical {
-  height: 100%;
-  width: 0px !important;
-  position: inherit !important;
-}
-
-.mat-ink-bar {
-  height: 3px !important;
-}
-
-.mat-paginator {
-  width: 62%;
-  margin: 0 auto;
+  & + .btn.btn-light {
+    margin-left: 1rem;
+  }
 }

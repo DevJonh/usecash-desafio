@@ -1,13 +1,13 @@
 {
   "users": [
     {
-      "name": "John Senna Oliveira",
-      "email": "john.senna@gmail.com",
+      "name": "Jhon Senna Oliveira",
+      "email": "jhon.senna@gmail.com",
       "login": "johns",
-      "senha": "U2FsdGVkX194tR4eaGNfQBLD3y7/SzST1m8aWAZ/A1g=",
+      "senha": "U2FsdGVkX18ppzYkRUKrc0+a/XeMv5tyI641TlY+3qk=",
       "acesso": "adm",
-      "status": "inativo",
-      "id": 1
+      "id": 1,
+      "status": "inativo"
     },
     {
       "name": "Gisele Santos",
@@ -15,7 +15,7 @@
       "login": "giseles",
       "senha": "U2FsdGVkX194tR4eaGNfQBLD3y7/SzST1m8aWAZ/A1g=",
       "acesso": "padrao",
-      "status": "inativo",
+      "status": "ativo",
       "id": 4
     },
     {
@@ -26,6 +26,15 @@
       "acesso": "adm",
       "status": "ativo",
       "id": 7
+    },
+    {
+      "name": "Jhonny Senna",
+      "email": "jhonny@gmail.com",
+      "login": "Jhonnys",
+      "senha": "U2FsdGVkX1/kLJY5iFzqvz+BD3c6hutZ5+Q3AOJbQBw=",
+      "acesso": "adm",
+      "status": "ativo",
+      "id": 8
     }
   ],
   "positions": [
@@ -60,12 +69,16 @@
     {
       "name": "Supervisor",
       "id": 9
+    },
+    {
+      "name": "Consulto Pleno",
+      "id": 10
     }
   ],
   "stores": [
     {
       "id": 1,
-      "number": 125,
+      "number": "125",
       "name": "Show Moveis",
       "status": "ativo",
       "regionId": 1,
@@ -82,10 +95,10 @@
     {
       "number": "72",
       "name": "Smart Technology",
-      "status": "inativo",
+      "status": "ativo",
       "id": 3,
       "regionId": 1,
-      "selected": false
+      "selected": true
     },
     {
       "number": "89",
@@ -93,7 +106,7 @@
       "region": 3,
       "status": "ativo",
       "regionId": 3,
-      "selected": false,
+      "selected": true,
       "id": 4
     },
     {
@@ -102,7 +115,7 @@
       "region": 2,
       "status": "ativo",
       "regionId": 2,
-      "selected": true,
+      "selected": false,
       "id": 5
     }
   ],

@@ -1,99 +1,109 @@
-<mat-tab-group [(selectedIndex)]=selectedIndex>
-  <mat-tab label="Cadastro">
-    <mat-card>
-      <mat-card-title>Cadastro das Regiões</mat-card-title>
-      <form [formGroup]="formData" (ngSubmit)="isEdit ? edit(formData.value) : save(formData.value)">
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <button [ngClass]="selectedIndex === 1 ? 'btn-outline-secondary text-light active-left':'btn-outline text-dark'"
+      class="btn nav-link" (click)="toggleAba(1)">Cadastro</button>
+  </li>
+  <li class="nav-item">
+    <button [ngClass]="selectedIndex === 2 ? 'btn-outline-secondary text-light active-right':'btn-outline text-dark'"
+      class="btn nav-link" (click)="toggleAba(2)">Lista</button>
+  </li>
+</ul>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Sigla da Região</mat-label>
-          <input matInput placeholder="ex. SP" formControlName="region" [errorStateMatcher]="matcher">
-          <mat-error
-            *ngIf="(formData.get('region')?.hasError('maxlength') || formData.get('region')?.hasError('minlength')) && !formData.get('region')?.hasError('required')">
-            Deve possuir 2 caracteres</mat-error>
-          <mat-error
-            *ngIf="formData.get('region')?.hasError('duplicateRegion') && !formData.get('region')?.hasError('required')">
-            Região já Cadastrada</mat-error>
-          <mat-error *ngIf="formData.get('region')?.hasError('required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
+<div class="tab-content">
+  <ngb-panel *ngIf="selectedIndex === 1" id="cadastro_region" title="Cadastro de Lojas">
+    <h4 class="mt-4">Cadastro das Regiões</h4>
 
-        <button class="btn-submit" mat-raised-button type="submit" [disabled]="formData.invalid">
-          Salvar
+    <form [formGroup]="formData" (ngSubmit)="save(formData.value)">
+      <div class="form-group">
+        <label
+          [ngClass]="!!(formData.get('region')?.invalid && (formData.get('region')?.dirty || formData.get('region')?.touched)) ? 'text-danger' : 'text-dark'">Sigla
+          da Região</label>
+        <input class="form-control"
+          [ngClass]="!!(formData.get('region')?.invalid && (formData.get('region')?.dirty || formData.get('region')?.touched)) ? 'is-invalid' : 'text-dark'"
+          placeholder="ex. SP" formControlName="region">
+        <div
+          *ngIf="!!(formData.get('region')?.invalid && (formData.get('region')?.dirty || formData.get('region')?.touched))">
+          <ngb-alert [dismissible]="false" type="danger" class="h-25 mb-0 px-3 py-2"
+            *ngIf="formData.get('region')?.hasError('maxlength') || formData.get('region')?.hasError('minlength') && !(formData.get('region')?.hasError('required'))">
+            Deve possuir 2 caracteres</ngb-alert>
+          <ngb-alert [dismissible]="false" type="danger" class="h-25 mb-0 px-3 py-2"
+            *ngIf="formData.get('region')?.hasError('duplicateRegion') && !(formData.get('region')?.hasError('required'))">
+            Região já Cadastrada</ngb-alert>
+          <ngb-alert [dismissible]="false" type="danger" class="h-25 mb-0 px-3 py-2"
+            *ngIf="formData.get('region')?.hasError('required')">
+            Campo
+            Obrigatório
+          </ngb-alert>
+        </div>
+      </div>
+
+      <button class="btn-submit btn btn-primary" type="submit" [disabled]="formData.invalid">
+        Salvar
+      </button>
+    </form>
+
+  </ngb-panel>
+
+  <ngb-panel *ngIf="selectedIndex === 2" id="lista_region" title="Lista de Lojas">
+    <h4 class="mt-4">Lista das Regiões</h4>
+    <div class="header-container">
+      <form class="list-region" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+        <input class="form-control search-list" type="search" placeholder="região" formControlName="search">
+        <button class="btn-list btn btn-outline-secondary text-light" type="submit">
+          <span>Pesquisar</span>
         </button>
       </form>
 
-    </mat-card>
-  </mat-tab>
-  <mat-tab label="Lista">
-    <mat-card>
-      <mat-card-title>Lista das Regiões</mat-card-title>
+      <button class="download btn btn-success" type="button" (click)="gerarPlanilha()">
+        <span>Dowload Excel</span><i class="fa fa-regular fa-download"></i>
+      </button>
+    </div>
 
-      <div class="header-container">
-        <form class="list-region" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
-          <input matInput type="search" placeholder="região" class="search-list" formControlName="search">
-          <button mat-raised-button color="primary" class="btn-list" type="submit">
-            <mat-icon>search</mat-icon>
-            Pesquisar
-          </button>
-        </form>
+    <table class="table table-striped ">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Região</th>
+          <th scope="col">Nº de Lojas</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
 
-        <button mat-raised-button class="download" type="button" (click)="gerarPlanilha()">
-          Dowload Excel <mat-icon>file_download</mat-icon>
-        </button>
-      </div>
-
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
-
-        <!-- Store Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            {{element.id}}
-          </td>
-        </ng-container>
-
-        <!-- Number Column -->
-        <ng-container matColumnDef="region">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Região </th>
-          <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            {{element.region}} </td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="number_loja">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nº de Lojas </th>
-          <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            {{element.number_store}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef> </th>
-          <td mat-cell *matCellDef="let element" [ngClass]="element.status === 'ativo' ? 'active' : 'inactive'">
-            <button mat-icon-button (click)="callEdit(element)">
-              <mat-icon>edit</mat-icon>
+      <tbody>
+        <tr *ngFor="let region of dataSource.data">
+          <td>{{region.id}}</td>
+          <td>{{region.region}}</td>
+          <td>{{region.number_store}}</td>
+          <td scope="row">
+            <button class="btn btn-light " (click)="callEdit(region)">
+              <i class="fa fa-regular fa-pencil"></i>
             </button>
-            <button mat-icon-button (click)="openModal(element.id, element.region)">
-              <mat-icon>store</mat-icon>
+            <button class="btn btn-light" (click)="openModal(region.id, region.region)">
+              <i class="fa fas fa-shopping-basket	"></i>
             </button>
-            <button mat-icon-button *ngIf="element.status === 'inativo'" (click)="toggleStatus(element)">
-              <mat-icon>check_box</mat-icon>
+            <button class="btn btn-light" *ngIf="region.status === 'inativo'" (click)="toggleStatus(region)">
+              <i class="fa fa-regular fa-check"></i>
             </button>
 
-            <button mat-icon-button *ngIf="element.status === 'ativo'" (click)="toggleStatus(element)">
-              <mat-icon>cancel</mat-icon>
+            <button class="btn btn-light" *ngIf="region.status === 'ativo'" (click)="toggleStatus(region)">
+              <i class="fa fa-regular fa-ban"></i>
             </button>
           </td>
-        </ng-container>
+        </tr>
+      </tbody>
 
-        <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    </table>
 
-      <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
-        <p>Nenhuma região cadastrada!</p>
-      </mat-card>
-
-      <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 15, 25]"></mat-paginator>
+    <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
+      <p>Nenhuma usuário encontrada!</p>
     </mat-card>
-  </mat-tab>
-</mat-tab-group>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="refreshCountries()">
+      </ngb-pagination>
+
+    </div>
+
+  </ngb-panel>
+</div>

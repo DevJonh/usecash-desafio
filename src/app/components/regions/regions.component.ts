@@ -17,9 +17,9 @@ import { ShowMessageService } from 'src/services/show-message.service';
 import { RegionService } from './regions.service';
 import { Subscription } from 'rxjs';
 import { Store } from 'src/app/models/store';
-import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import { map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-regions',
@@ -33,8 +33,12 @@ export class RegionsComponent implements OnInit {
   stores: Store[] = [];
   formData!: FormGroup;
   searchData!: FormGroup;
-  selectedIndex = 1;
   isEdit = false;
+  selectedIndex = 2;
+
+  page = 1;
+  pageSize = 6;
+  collectionSize!: number;
 
   matcher = new MyErrorStateMatcher();
 
@@ -56,7 +60,7 @@ export class RegionsComponent implements OnInit {
     private regionService: RegionService,
     private message: ShowMessageService,
     private storeService: StoreService,
-    private dialog: MatDialog
+    private modalService: NgbModal
   ) {}
 
   private fillFormData() {
@@ -84,8 +88,25 @@ export class RegionsComponent implements OnInit {
 
         this.regions = regions;
         this.dataSource.data = this.regions;
-        this.selectedIndex = 1;
+        this.collectionSize = this.regions.length;
+        this.refreshCountries();
+        this.toggleAba(2);
       });
+  }
+
+  refreshCountries() {
+    this.dataSource.data = this.regions
+      .map((region) => ({
+        ...region,
+      }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
+  toggleAba(index: number) {
+    this.selectedIndex = index;
   }
 
   ngOnInit(): void {
@@ -125,16 +146,17 @@ export class RegionsComponent implements OnInit {
       .subscribe(() => {
         this.message.showMessage('Usuário Cadastrado com Sucesso');
         this.getAllRegions();
-        this.selectedIndex = 1;
       });
   }
 
-  search(param: { search: string }) {
-    let newRegion = this.regions.filter((region) =>
-      region.region.includes(param.search.toUpperCase())
+  search(param: any) {
+    let newRegion = this.regions.filter(
+      (region) => region.region === param.search.toUpperCase()
     );
 
-    if (newRegion.length > 0) {
+    if (newRegion.length > this.pageSize) {
+      this.refreshCountries();
+    } else if (newRegion.length > 0) {
       this.dataSource.data = newRegion;
     } else {
       this.message.showMessage(
@@ -142,6 +164,7 @@ export class RegionsComponent implements OnInit {
         true
       );
       this.searchData.reset();
+      this.refreshCountries();
     }
   }
 
@@ -167,15 +190,21 @@ export class RegionsComponent implements OnInit {
       ...data,
     };
     this.fillFormData();
-    this.selectedIndex = 0;
+    this.toggleAba(1);
     this.isEdit = true;
   }
 
-  openModal(id: number, region: string): void {
-    this.dialog.open(ModalComponent, {
-      width: '900px',
-      data: { id, region },
+  openModal(id: number | undefined, region: string): void {
+    if (!id) {
+      return;
+    }
+    const modalRef = this.modalService.open(ModalComponent, {
+      windowClass: 'modal-style',
+      centered: true,
     });
+
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.region = region;
   }
 
   toggleStatus(data: Region) {

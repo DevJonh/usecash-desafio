@@ -1,75 +1,93 @@
-<mat-tab-group [(selectedIndex)]=selectedIndex>
-  <mat-tab label="Cadastro">
-    <mat-card>
-      <mat-card-title>Cadastro dos Cargos</mat-card-title>
-      <form [formGroup]="formData" (ngSubmit)="save(formData.value)">
-        <mat-form-field appearance="fill">
-          <mat-label>Nome do Cargo</mat-label>
-          <input matInput placeholder="ex. Analista Junior" formControlName="name" [errorStateMatcher]="matcher">
-          <mat-error *ngIf="formData.get('name')?.hasError('required')">Campo Obrigatório</mat-error>
-        </mat-form-field>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <button [ngClass]="selectedIndex === 1 ? 'btn-outline-secondary text-light active-left':'btn-outline text-dark'"
+      class="btn nav-link" (click)="toggleAba(1)">Cadastro</button>
+  </li>
+  <li class="nav-item">
+    <button [ngClass]="selectedIndex === 2 ? 'btn-outline-secondary text-light active-right':'btn-outline text-dark'"
+      class="btn nav-link" (click)="toggleAba(2)">Lista</button>
+  </li>
+</ul>
 
-        <button class="btn-submit" mat-raised-button type="submit" [disabled]="formData.invalid">
-          Salvar
+<div class="tab-content">
+  <ngb-panel *ngIf="selectedIndex === 1" id="cadastro_position" title="Cadastro de Cargos">
+    <h4 class="mt-4">Cadastro de Cargos</h4>
+
+    <form [formGroup]="formData" (ngSubmit)="save(formData.value)">
+      <div class="form-group">
+        <label
+          [ngClass]="!!(formData.get('name')?.invalid && (formData.get('name')?.dirty || formData.get('name')?.touched)) ? 'text-danger' : 'text-dark'">Nome
+          do Cargo</label>
+        <input class="form-control"
+          [ngClass]="!!(formData.get('name')?.invalid && (formData.get('name')?.dirty || formData.get('name')?.touched)) ? 'is-invalid' : 'text-dark'"
+          placeholder="ex. Analista Junior" formControlName="name">
+        <div
+          *ngIf="!!(formData.get('name')?.invalid && (formData.get('name')?.dirty || formData.get('name')?.touched))">
+          <ngb-alert [dismissible]="false" type="danger" class="h-25 mb-0 px-3 py-2"
+            *ngIf="formData.get('name')?.hasError('required')">
+            Campo
+            Obrigatório
+          </ngb-alert>
+        </div>
+      </div>
+
+      <button class="btn-submit btn btn-primary" type="submit" [disabled]="formData.invalid">
+        Salvar
+      </button>
+    </form>
+
+  </ngb-panel>
+
+  <ngb-panel *ngIf="selectedIndex === 2" id="lista_position" title="Lista de Cargos">
+    <h4 class="mt-4">Lista de Cargos</h4>
+    <div class="header-container">
+      <form class="list-position" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+        <input class="form-control search-list" type="search" placeholder="nome do cargo" formControlName="search">
+        <button class="btn-list btn btn-outline-secondary text-light" type="submit">
+          <span>Pesquisar</span>
         </button>
       </form>
 
-    </mat-card>
-  </mat-tab>
-  <mat-tab label="Cargos">
-    <mat-card>
-      <mat-card-title>Lista dos Cargos</mat-card-title>
+      <button class="download btn btn-success" type="button" (click)="gerarPlanilha()">
+        <span>Dowload Excel</span><i class="fa fa-regular fa-download"></i>
+      </button>
+    </div>
 
-      <div class="header-container">
-        <form class="list-position" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
-          <input matInput type="search" placeholder="nome do cargo" class="search-list" formControlName="search">
-          <button mat-raised-button color="primary" class="btn-list" type="submit">
-            <mat-icon>search</mat-icon>
-            Pesquisar
-          </button>
-        </form>
+    <table class="table table-striped ">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
 
-        <button mat-raised-button class="download" type="button" (click)="gerarPlanilha()">
-          Dowload Excel <mat-icon>file_download</mat-icon>
-        </button>
-      </div>
-
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
-
-        <!-- Position Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-          <td mat-cell *matCellDef="let element">
-            {{element.id}}
-          </td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-          <td mat-cell *matCellDef="let element">
-            {{element.name}} </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef> </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button (click)="deletePosition(element.id)">
-              <mat-icon>delete</mat-icon>
+      <tbody>
+        <tr *ngFor="let position of dataSource.data">
+          <td>{{position.id}}</td>
+          <td>{{position.name}}</td>
+          <td scope="row">
+            <button class="btn btn-light" (click)="deletePosition(position.id)">
+              <i class="fa fa-regular fa-trash"></i>
             </button>
           </td>
-        </ng-container>
+        </tr>
+      </tbody>
 
-        <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    </table>
 
-      <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
-        <p>Nenhuma usuário encontrada!</p>
-      </mat-card>
-
-      <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 15, 25]"></mat-paginator>
+    <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
+      <p>Nenhuma usuário encontrada!</p>
     </mat-card>
-  </mat-tab>
-</mat-tab-group>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="refreshCountries()">
+      </ngb-pagination>
+
+    </div>
+
+
+
+  </ngb-panel>
+</div>

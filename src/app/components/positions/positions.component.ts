@@ -28,7 +28,11 @@ export class PositionsComponent implements OnInit {
   position: Position = <Position>{};
   formData!: FormGroup;
   searchData!: FormGroup;
-  selectedIndex = 0;
+  selectedIndex = 2;
+
+  page = 1;
+  pageSize = 6;
+  collectionSize!: number;
 
   matcher = new MyErrorStateMatcher();
 
@@ -66,9 +70,26 @@ export class PositionsComponent implements OnInit {
       .getPositions()
       .subscribe((data) => {
         this.positions = data;
+        this.collectionSize = this.positions.length;
         this.dataSource.data = this.positions;
-        this.selectedIndex = 1;
+        this.refreshCountries();
+        this.toggleAba(2);
       });
+  }
+
+  refreshCountries() {
+    this.dataSource.data = this.positions
+      .map((position) => ({
+        ...position,
+      }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
+  toggleAba(index: number) {
+    this.selectedIndex = index;
   }
 
   ngOnInit(): void {
@@ -100,7 +121,7 @@ export class PositionsComponent implements OnInit {
       .subscribe(() => {
         this.message.showMessage('Usuário Cadastrado com Sucesso');
         this.getAllPositions();
-        this.selectedIndex = 1;
+        this.toggleAba(2);
         this.formData.reset();
       });
   }
@@ -110,7 +131,9 @@ export class PositionsComponent implements OnInit {
       position.name.includes(param.search)
     );
 
-    if (newPosition.length > 0) {
+    if (newPosition.length > this.pageSize) {
+      this.refreshCountries();
+    } else if (newPosition.length > 0) {
       this.dataSource.data = newPosition;
     } else {
       this.message.showMessage(
@@ -118,10 +141,14 @@ export class PositionsComponent implements OnInit {
         true
       );
       this.searchData.reset();
+      this.refreshCountries();
     }
   }
 
-  deletePosition(id: number) {
+  deletePosition(id: number | undefined) {
+    if (!id) {
+      return;
+    }
     this.deletePositionSubscription = this.positionService
       .deletePosition(id)
       .subscribe(() => {

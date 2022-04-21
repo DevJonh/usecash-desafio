@@ -1,6 +1,6 @@
 export interface Store {
   id?: number;
-  number: number;
+  number: string;
   name: string;
   status: 'ativo' | 'inativo';
   regionId: number;

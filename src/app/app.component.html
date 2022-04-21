@@ -1,13 +1,12 @@
-<block-ui message="Processando, aguarde...">
-  <app-header></app-header>
-  <div class="container-fluid">
-    <div class="row">
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-        <router-outlet></router-outlet>
-      </main>
-    </div>
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <router-outlet></router-outlet>
+    </main>
   </div>
-</block-ui>
+</div>
+
 
 <ngx-guided-tour skipText="Pular" nextText="Próximo" doneText="Finalizar" closeText="Fechar" backText="Voltar">
 </ngx-guided-tour>

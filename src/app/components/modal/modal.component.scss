@@ -1,33 +1,61 @@
-div.mat-dialog-content {
+.form-group.radio {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  label {
+    margin-right: 1rem;
+    color: #222;
+  }
+
+  .form-check {
+    label {
+      font-size: 0.9rem;
+      margin-left: 0.2rem;
+      font-weight: 400;
+    }
+  }
 }
 
-div.mat-form-field-wrapper.ng-tns-c52-2 {
-  flex: 1;
-}
-
-div.mat-dialog-actions {
+ul li {
   display: flex;
-  justify-content: space-between;
 }
 
-.mat-tab-label {
-  color: #fff;
-  opacity: 1 !important;
+label {
   font-size: 1rem;
-  letter-spacing: 0.1rem;
-
-  width: 50%;
-  justify-content: flex-start !important;
-
-  border-radius: 5px;
+  font-weight: 500;
+  letter-spacing: 0.09;
+  padding-left: 0.2rem;
+}
+input.form-control {
+  height: 3rem;
 }
 
-.mat-card {
-  padding: 1rem !important;
+.form-group.radio {
+  display: flex;
+  align-items: center;
+  label {
+    margin-right: 1rem;
+    color: #222;
+  }
+
+  .form-check {
+    label {
+      font-size: 0.9rem;
+      margin-left: 0.2rem;
+      font-weight: 400;
+    }
+  }
+}
+
+.btn.btn-outline-secondary.active-left {
+  border-radius: 0 0 4px 4px !important;
+}
+
+.btn.btn-outline-secondary {
+  background-color: #17475c;
+  &:active {
+    background-color: #17475c !important;
+    border-color: #17475c !important;
+  }
 }
 
 strong {
@@ -36,49 +64,23 @@ strong {
   margin-top: 1.2rem;
 }
 
-.mat-form-field {
+form {
   width: 100%;
-  margin: 0 auto;
-}
-.mat-form-field + .mat-form-field {
-  margin-top: 1.2rem;
-}
-
-.mat-raised-button.btn-submit {
-  cursor: pointer;
-  width: 25%;
-  height: 2.7rem;
-  margin: 3rem 0 1rem auto;
-  border: none;
-  border-radius: 3px;
-  background-color: #3f51b5;
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  transition: background 0.3s;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
 }
 
-.mat-raised-button.btn-submit:hover {
-  background-color: #2d3ea0;
-}
-
-.mat-raised-button.btn-submit:disabled {
-  cursor: not-allowed;
-  background-color: #ccc;
-  color: #222;
-}
-
-form.list-region {
-  width: 50%;
+form.list-user {
+  width: 35%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-}
-
-form.list-region .mat-form-field {
-  height: 24px;
+  input {
+    margin-right: 1rem;
+    height: 2.5rem;
+  }
 }
 
 .header-container {
@@ -88,29 +90,7 @@ form.list-region .mat-form-field {
   justify-content: space-between;
 }
 
-.mat-raised-button.btn-list {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 1rem;
-  height: 40px;
-  width: 12rem;
-}
-.mat-raised-button.btn-list span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 9rem;
-}
-
-.mat-input-element.search-list {
-  border: 1px solid #000;
-  padding: 0.55rem 1rem;
-  border-radius: 5px;
-  height: 40px;
-}
-
-.mat-raised-button.download {
+.btn.download {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,88 +103,36 @@ form.list-region .mat-form-field {
   transition: background 0.3s;
 }
 
-.mat-raised-button.download:hover {
+.btn.download:hover {
   background-color: #009414;
 }
 
-.mat-raised-button.download span {
+.btn.download .fa {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 9rem;
+  margin-left: 1rem;
 }
 
 .table {
   width: 100%;
-  margin: 3rem auto;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  td {
+    vertical-align: middle;
+  }
 }
 
-.mat-header-row {
-  background-color: #06055a;
-}
+.btn.btn-light {
+  padding: 0;
+  background: none;
+  border: none;
+  .fa {
+    font-size: 1.2rem;
+  }
 
-.mat-header-row th {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.mat-header-row th {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.mat-column-status,
-.mat-column-action {
-  width: 6.5rem;
-}
-
-.mat-column-id {
-  width: 14rem;
-}
-
-.mat-column-action span {
-  display: inline-block;
-  margin: 0;
-  cursor: pointer;
-}
-
-.mat-cell.active {
-  background-color: #36f47555;
-}
-
-.mat-cell.inactive {
-  background-color: #f4433655;
-}
-
-.mat-column-action span + span {
-  margin-left: 1.5rem;
-}
-
-.not-found p {
-  color: #ff0000;
-  margin-left: 0.3rem;
-  font-size: 1rem;
-}
-
-.not-found button {
-  margin-top: 2rem;
-}
-
-.mat-ink-bar {
-  height: 3px !important;
-}
-
-.mat-paginator {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.mat-card-footer button + button {
-  margin-left: 1rem;
-}
-
-.mat-card-footer button {
-  margin-bottom: 1rem;
-  margin-right: 1rem;
-  margin-top: 2rem;
+  & + .btn.btn-light {
+    margin-left: 1rem;
+  }
 }

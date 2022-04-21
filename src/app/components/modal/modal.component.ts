@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +9,7 @@ import { Store } from 'src/app/models/store';
 import { MyErrorStateMatcher } from 'src/app/utils/input-error-state';
 import { ShowMessageService } from 'src/services/show-message.service';
 import { StoreService } from '../stores/stores.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 interface modalData {
   id: number;
@@ -22,11 +22,16 @@ interface modalData {
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
+  @Input() id!: number;
+  @Input() region!: string;
   displayedColumns: string[] = ['id', 'store', 'action'];
   stores!: Store[];
   searchData!: FormGroup;
-  region = '';
   option: string = 'select';
+
+  page = 1;
+  pageSize = 5;
+  collectionSize!: number;
 
   storeSelects: Store[] = [];
 
@@ -43,10 +48,13 @@ export class ModalComponent implements OnInit {
       .getStores()
       .subscribe((stores) => {
         this.stores = stores.filter(
-          (store) => store.regionId === this.data.id && store.status === 'ativo'
+          (store) => store.regionId === this.id && store.status === 'ativo'
         );
+        this.collectionSize = this.stores.length;
         this.dataSource.data = this.stores;
+        this.collectionSize = this.stores.length;
         this.updateSelecteds(stores);
+        this.refreshCountries();
       });
   }
 
@@ -55,8 +63,19 @@ export class ModalComponent implements OnInit {
     this.storeSelects.push(...storeFiltered);
   }
 
+  refreshCountries() {
+    this.dataSource.data = this.stores
+      .map((store) => ({
+        ...store,
+      }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: modalData,
+    public activeModal: NgbActiveModal,
     private message: ShowMessageService,
     private storeService: StoreService,
     private fb: FormBuilder
@@ -68,21 +87,16 @@ export class ModalComponent implements OnInit {
     });
 
     this.getAllStores();
-    this.region = this.data.region;
   }
 
-  close(stores: Store[]) {
-    return {
-      data: stores,
-    };
-  }
-
-  search(param: { search: string }) {
-    let newStore = this.stores.filter(
-      (store) => Number(store.number) === Number(param.search)
+  search(param: any) {
+    let newStore = this.stores.filter((store) =>
+      store.number.includes(param.search)
     );
 
-    if (newStore.length > 0) {
+    if (newStore.length > this.pageSize) {
+      this.refreshCountries();
+    } else if (newStore.length > 0) {
       this.dataSource.data = newStore;
     } else {
       this.message.showMessage(
@@ -91,6 +105,7 @@ export class ModalComponent implements OnInit {
       );
       this.dataSource.data = this.stores;
       this.searchData.reset();
+      this.refreshCountries();
     }
   }
 

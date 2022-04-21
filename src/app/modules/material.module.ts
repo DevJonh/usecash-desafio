@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatSelectModule,
     FontAwesomeModule,
     NgbModule,
+    NgSelectModule,
   ],
   exports: [
     MatToolbarModule,
@@ -56,6 +58,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatSelectModule,
     FontAwesomeModule,
     NgbModule,
+    NgSelectModule,
   ],
 })
 export class AngularMaterialModule {}

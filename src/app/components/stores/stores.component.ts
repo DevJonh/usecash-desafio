@@ -31,7 +31,11 @@ export class StoresComponent implements OnInit {
   regions!: Region[];
   formData!: FormGroup;
   searchData!: FormGroup;
-  selectedIndex = 0;
+  selectedIndex = 2;
+
+  page = 1;
+  pageSize = 4;
+  collectionSize!: number;
 
   matcher = new MyErrorStateMatcher();
 
@@ -82,8 +86,25 @@ export class StoresComponent implements OnInit {
       .subscribe((data) => {
         this.stores = data;
         this.dataSource.data = this.stores;
-        this.selectedIndex = 1;
+        this.collectionSize = this.stores.length;
+        this.refreshCountries();
+        this.toggleAba(2);
       });
+  }
+
+  refreshCountries() {
+    this.dataSource.data = this.stores
+      .map((store) => ({
+        ...store,
+      }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
+  toggleAba(index: number) {
+    this.selectedIndex = index;
   }
 
   ngOnInit(): void {
@@ -121,17 +142,18 @@ export class StoresComponent implements OnInit {
     this.createSubscription = this.storeService.create(store).subscribe(() => {
       this.message.showMessage('Usuário Cadastrado com Sucesso');
       this.getAllStores();
-      this.selectedIndex = 1;
       this.formData.reset();
     });
   }
 
   search(param: any) {
-    let newStore = this.stores.filter(
-      (store) => store.number === Number(param.search)
+    let newStore = this.stores.filter((store) =>
+      store.number.includes(param.search)
     );
 
-    if (newStore.length > 0) {
+    if (newStore.length > this.pageSize) {
+      this.refreshCountries();
+    } else if (newStore.length > 0) {
       this.dataSource.data = newStore;
     } else {
       this.message.showMessage(
@@ -139,6 +161,7 @@ export class StoresComponent implements OnInit {
         true
       );
       this.searchData.reset();
+      this.refreshCountries();
     }
   }
 

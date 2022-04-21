@@ -1,75 +1,73 @@
-<mat-card>
-  <mat-card-subtitle>Região: {{region}}</mat-card-subtitle>
+<ngb-panel title="Modal Lojas">
+  <h6 class="mt-4">Região: {{region}}</h6>
 
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="option">
-    <mat-radio-button value="all">Todas as Lojas</mat-radio-button>
-    <mat-radio-button value="select">Selecionar as Lojas</mat-radio-button>
-  </mat-radio-group>
-
+  <div class="form-group radio">
+    <label class="form-check-label">Selecione uma opção:</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" value="all" [(ngModel)]="option">
+      <label class="form-check-label">Todas as lojas</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" value="select" [(ngModel)]="option">
+      <label class="form-check-label">Selecionar as Lojas</label>
+    </div>
+  </div>
 
   <div class="header-container">
-    <form class="list-region" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
-      <input matInput type="number" placeholder="nº da loja" class="search-list" formControlName="search">
-      <button mat-raised-button color="primary" class="btn-list" type="submit">
-        <mat-icon>search</mat-icon>
-        Pesquisar
+    <form class="list-user" [formGroup]="searchData" (ngSubmit)="search(searchData.value)">
+      <input class="form-control search-list" type="search" placeholder="nº da loja" formControlName="search">
+      <button class="btn-list btn btn-outline-secondary text-light" type="submit">
+        <span>Pesquisar</span>
       </button>
     </form>
 
-    <button mat-raised-button class="download" type="button" (click)="gerarPlanilha()">
-      Dowload Excel <mat-icon>file_download</mat-icon>
+    <button class="download btn btn-success" type="button" (click)="gerarPlanilha()">
+      <span>Dowload Excel</span><i class="fa fa-regular fa-download"></i>
     </button>
   </div>
 
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Cod</th>
+        <th scope="col">Loja</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
 
-    <!-- Store Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo da Loja </th>
-      <td mat-cell *matCellDef="let element">
-        {{element.number}}
-      </td>
-    </ng-container>
+    <tbody>
+      <tr *ngFor="let store of dataSource.data">
+        <td>{{store.number}}</td>
+        <td>{{store.name}}</td>
+        <td>{{store.status}}</td>
+        <td scope="row">
+          <button class="btn btn-light" *ngIf="store.selected" (click)="toggleStatus(store)">
+            <i class="fa fas fa-check-square"></i>
+          </button>
 
-    <!-- Number Column -->
-    <ng-container matColumnDef="store">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Loja </th>
-      <td mat-cell *matCellDef="let element">
-        {{element.name}} </td>
-    </ng-container>
+          <button class="btn btn-light" *ngIf="!store.selected" (click)="toggleStatus(store)">
+            <i class="fa fas fa-square"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
 
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef> </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button *ngIf="!element.selected" (click)="toggleStatus(element)">
-          <mat-icon>check_box_outline_blank</mat-icon>
-        </button>
-
-        <button mat-icon-button *ngIf="element.selected" (click)="toggleStatus(element)">
-          <mat-icon>check_box</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-card class="not-found" *ngIf="dataSource.data.length < 1">
-    <p>Nenhuma loja encontrada nessa região!</p>
-  </mat-card>
+  <ngb-panel class="not-found" *ngIf="dataSource.data.length < 1">
+    <p>Nenhuma usuário encontrada!</p>
+  </ngb-panel>
 
-  <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 15, 25]"></mat-paginator>
+  <div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+      (pageChange)="refreshCountries()">
+    </ngb-pagination>
 
-  <mat-card-footer align="end">
-    <button mat-raised-button [mat-dialog-close]="close(storeSelects)">
-      Cancelar
-    </button>
+  </div>
 
-    <button mat-raised-button [mat-dialog-close]="close(storeSelects)">
-      Salvar
-    </button>
-  </mat-card-footer>
-</mat-card>
+  <div class="panel-footer">
+    <button class="btn btn-secondary" (click)="activeModal.close()">Cancelar</button>
+    <button class="btn btn-primary" (click)="activeModal.close()">Salvar</button>
+  </div>
+
+</ngb-panel>

@@ -6,16 +6,16 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+
 import alasql from 'alasql';
 
 import { User } from 'src/app/models/user';
-import { MyErrorStateMatcher } from 'src/app/utils/input-error-state';
 import { ShowMessageService } from 'src/services/show-message.service';
 import { UserService } from './users.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users',
@@ -36,12 +36,15 @@ export class UsersComponent implements OnInit {
   user: User = <User>{};
   formData!: FormGroup;
   searchData!: FormGroup;
-  selectedIndex = 0;
+  selectedIndex = 2;
   isEdit = false;
-  matcher = new MyErrorStateMatcher();
-
   dataSource = new MatTableDataSource<User>();
   users!: User[];
+
+  page = 1;
+  pageSize = 6;
+  collectionSize!: number;
+
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
@@ -81,9 +84,26 @@ export class UsersComponent implements OnInit {
       .getUsers()
       .subscribe((data) => {
         this.users = data;
+        this.collectionSize = this.users.length;
         this.dataSource.data = this.users;
-        this.selectedIndex = 1;
+        this.refreshCountries();
+        this.toggleAba(2);
       });
+  }
+
+  refreshCountries() {
+    this.dataSource.data = this.users
+      .map((user) => ({
+        ...user,
+      }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
+  }
+
+  toggleAba(index: number) {
+    this.selectedIndex = index;
   }
 
   ngOnInit(): void {
@@ -94,11 +114,6 @@ export class UsersComponent implements OnInit {
     });
 
     this.getAllUsers();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   ngOnDestroy(): void {
@@ -119,7 +134,7 @@ export class UsersComponent implements OnInit {
     this.createSubscription = this.userService.create(user).subscribe(() => {
       this.message.showMessage('Usuário Cadastrado com Sucesso');
       this.getAllUsers();
-      this.selectedIndex = 1;
+      this.toggleAba(2);
       this.formData.reset();
     });
   }
@@ -150,7 +165,9 @@ export class UsersComponent implements OnInit {
         user.login.includes(param.search)
     );
 
-    if (newUser.length > 0) {
+    if (newUser.length > this.pageSize) {
+      this.refreshCountries();
+    } else if (newUser.length > 0) {
       this.dataSource.data = newUser;
     } else {
       this.message.showMessage(
@@ -158,6 +175,7 @@ export class UsersComponent implements OnInit {
         true
       );
       this.searchData.reset();
+      this.refreshCountries();
     }
   }
 
@@ -167,11 +185,14 @@ export class UsersComponent implements OnInit {
       senha: this.userService.decryptPassword(data.senha),
     };
     this.fillFormData();
-    this.selectedIndex = 0;
+    this.toggleAba(1);
     this.isEdit = true;
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: number | undefined) {
+    if (!id) {
+      return;
+    }
     this.deleteUserSubscription = this.userService
       .deleteUser(id)
       .subscribe(() => {
@@ -196,7 +217,7 @@ export class UsersComponent implements OnInit {
 
   gerarPlanilha() {
     alasql('SELECT * INTO XLSX("users.xlsx", {headers: true}) FROM ?', [
-      this.dataSource.data,
+      this.users,
     ]);
   }
 
