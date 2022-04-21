@@ -15,6 +15,13 @@ import { PositionsComponent } from './components/positions/positions.component';
 import { StoresComponent } from './components/stores/stores.component';
 import { RegionsComponent } from './components/regions/regions.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ArchwizardModule } from 'angular-archwizard';
+
+import { BlockUIModule } from 'ng-block-ui';
+import { BlockUIHttpModule } from 'ng-block-ui/http';
+
+import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
+import { NgxBrModule } from '@nbfontana/ngx-br';
 
 @NgModule({
   declarations: [
@@ -35,8 +42,17 @@ import { ModalComponent } from './components/modal/modal.component';
     ReactiveFormsModule,
     FormsModule,
     AngularMaterialModule,
+    ArchwizardModule,
+    BlockUIModule.forRoot({
+      delayStop: 300,
+    }),
+    BlockUIHttpModule.forRoot({
+      blockAllRequestsInProgress: true,
+    }),
+    GuidedTourModule,
+    NgxBrModule.forRoot(),
   ],
-  providers: [],
+  providers: [GuidedTourService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

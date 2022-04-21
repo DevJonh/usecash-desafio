@@ -24,7 +24,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-regions',
   templateUrl: './regions.component.html',
-  styleUrls: ['./regions.component.css'],
+  styleUrls: ['./regions.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class RegionsComponent implements OnInit {

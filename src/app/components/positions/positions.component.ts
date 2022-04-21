@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-positions',
   templateUrl: './positions.component.html',
-  styleUrls: ['./positions.component.css'],
+  styleUrls: ['./positions.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class PositionsComponent implements OnInit {

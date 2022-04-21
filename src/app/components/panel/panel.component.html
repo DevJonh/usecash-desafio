@@ -1,41 +1,62 @@
-<mat-accordion>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Painel 1
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <ul>
-      <li><a href="/users">Usuários</a></li>
-      <li><a href="/positions">Cargos</a></li>
-      <li><a href="/stores">Lojas</a></li>
-      <li><a href="/regions">Regiões</a></li>
-    </ul>
-  </mat-expansion-panel>
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Painel 2
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <ul>
-      <li><a href="/users">Usuários</a></li>
-      <li><a href="/positions">Cargos</a></li>
-      <li><a href="/stores">Lojas</a></li>
-      <li><a href="/regions">Regiões</a></li>
-    </ul>
-  </mat-expansion-panel>
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Painel 3
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <ul>
-      <li><a href="/users">Usuários</a></li>
-      <li><a href="/positions">Cargos</a></li>
-      <li><a href="/stores">Lojas</a></li>
-      <li><a href="/regions">Regiões</a></li>
-    </ul>
-  </mat-expansion-panel>
-</mat-accordion>
+<ngb-accordion #acc="ngbAccordion" [closeOthers]="true" (panelChange)="changePanel($event)">
+  <ngb-panel id="panel-1" type="secondary">
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <button class="toggleBtn cursor-pointer bg-transparent border-0 text-left text-white w-100" ngbPanelToggle>
+          Painel 1
+        </button>
+        <fa-icon *ngIf="!panel1" [icon]="down"></fa-icon>
+        <fa-icon *ngIf="!panel1" [icon]="up"></fa-icon>
+
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <ul>
+        <li><a class="text-light" href="/users">Usuários</a></li>
+        <li><a class="text-light" href="/positions">Cargos</a></li>
+        <li><a class="text-light" href="/stores">Lojas</a></li>
+        <li><a class="text-light" href="/regions">Regiões</a></li>
+      </ul>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="panel-2" type="secondary">
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <button class="toggleBtn cursor-pointer bg-transparent border-0 text-left text-white w-100" ngbPanelToggle>
+          Painel 2
+        </button>
+        <fa-icon *ngIf="!panel2" [icon]="down"></fa-icon>
+        <fa-icon *ngIf="!panel2" [icon]="up"></fa-icon>
+
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <ul>
+        <li><a class="text-light" href="/users">Usuários</a></li>
+        <li><a class="text-light" href="/positions">Cargos</a></li>
+        <li><a class="text-light" href="/stores">Lojas</a></li>
+        <li><a class="text-light" href="/regions">Regiões</a></li>
+      </ul>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="panel-3" type="secondary">
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center justify-content-between">
+        <button class="toggleBtn cursor-pointer bg-transparent border-0 text-left text-white w-100" ngbPanelToggle>
+          Painel 3
+        </button>
+        <fa-icon *ngIf="!panel3" [icon]="down"></fa-icon>
+        <fa-icon *ngIf="!panel3" [icon]="up"></fa-icon>
+
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <ul>
+        <li><a class="text-light" href="/users">Usuários</a></li>
+        <li><a class="text-light" href="/positions">Cargos</a></li>
+        <li><a class="text-light" href="/stores">Lojas</a></li>
+        <li><a class="text-light" href="/regions">Regiões</a></li>
+      </ul>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

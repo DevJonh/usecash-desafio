@@ -15,6 +15,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSortModule,
     MatDialogModule,
     MatSelectModule,
+    FontAwesomeModule,
+    NgbModule,
   ],
   exports: [
     MatToolbarModule,
@@ -50,6 +54,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSortModule,
     MatDialogModule,
     MatSelectModule,
+    FontAwesomeModule,
+    NgbModule,
   ],
 })
 export class AngularMaterialModule {}

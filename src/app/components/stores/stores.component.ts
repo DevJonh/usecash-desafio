@@ -22,7 +22,7 @@ import { RegionService } from '../regions/regions.service';
 @Component({
   selector: 'app-stores',
   templateUrl: './stores.component.html',
-  styleUrls: ['./stores.component.css'],
+  styleUrls: ['./stores.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class StoresComponent implements OnInit {

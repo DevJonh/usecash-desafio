@@ -20,7 +20,7 @@ import { Observable, Subscription } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css'],
+  styleUrls: ['./users.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class UsersComponent implements OnInit {
