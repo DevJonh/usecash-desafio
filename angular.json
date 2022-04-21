@@ -27,6 +27,11 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/angular-archwizard/styles/archwizard.css",
+              "src/assets/css/bootstrap.css",
+              "src/assets/br-bank-icon/all.css",
+              "src/assets/scss/font-awesome.scss",
+              "src/assets/scss/uc-images.scss",
+              "src/assets/scss/barcode.scss",
               "src/styles.scss"
             ],
             "scripts": []

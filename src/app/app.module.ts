@@ -21,7 +21,6 @@ import { BlockUIModule } from 'ng-block-ui';
 import { BlockUIHttpModule } from 'ng-block-ui/http';
 
 import { GuidedTourModule, GuidedTourService } from 'ngx-guided-tour';
-import { NgxBrModule } from '@nbfontana/ngx-br';
 
 @NgModule({
   declarations: [
@@ -50,7 +49,6 @@ import { NgxBrModule } from '@nbfontana/ngx-br';
       blockAllRequestsInProgress: true,
     }),
     GuidedTourModule,
-    NgxBrModule.forRoot(),
   ],
   providers: [GuidedTourService],
   bootstrap: [AppComponent],
